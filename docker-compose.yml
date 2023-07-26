@@ -21,7 +21,7 @@ services:
     web:
         container_name: john-doe-web
         restart: always
-        build: ./web
+        build: ./john-doe-web
         ports:
             - "3005:3000"
         depends_on:
