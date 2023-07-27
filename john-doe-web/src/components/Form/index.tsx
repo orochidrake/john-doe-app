@@ -20,7 +20,7 @@ declare global {
 const signup = async (
   data: SignupDataInterface
 ): Promise<SignupResponseInterface> => {
-  if (!data.name ||!data.cpf || !data.color) {
+  if (!data.name || !data.cpf || !data.email) {
     return new Promise((resolve, reject) => resolve(http.response.body))
   }
 
@@ -31,7 +31,7 @@ const signup = async (
       name: data.name,
       cpf: removeMaskCpf(data.cpf),
       email: data.email,
-      color: data.color
+      color: data.color ? data.color : "FFFFFF"
     })
   ) {
     return new Promise((resolve, reject) => reject(http.errorMessage))
@@ -85,35 +85,21 @@ export default function FormComponent() {
 
         Swal.fire({
           text: 'Cadastro criado com sucesso!',
-          icon:'success'
-        }).then((result) => {
+          icon: 'success'
+        }).then((result: any) => {
           // Reload the Page
           location.reload();
         });
 
       })
       .catch((err) => {
-        if (err == 'Error: Cpf already exists') {
-          Swal.fire({
-            text: 'CPF já cadastrado',
-            icon:'error'
-          });
-
-        } else if (err == 'Error: Email already exists') {
-          const message =
-            'E-mail já cadastrado. Insira um e-mail diferente para continuar o cadastro.'
-          Swal.fire({
-            text: message,
-            icon: 'warning'
-          })
-        } else {
-          const message =
-            'Ocorreu um erro durante o processamento dos dados, tente novamente'
-          Swal.fire({
-            text: message,
-            icon: 'warning'
-          })
-        }
+        Swal.fire({
+          text: 'Ocorreu um erro durante o processamento dos dados, verifique os dados tente novamente!',
+          icon: 'warning'
+        }).then((result: any) => {
+          // Reload the Page
+          location.reload();
+        });
       })
   }
 
@@ -129,18 +115,17 @@ export default function FormComponent() {
         <S.Content>
           <S.Form onSubmit={handleSubmit}>
             <Input
-              label="CPF"
-              dataType="cpf"
-              handler={(cpf: string) => {
-                setForm({ ...form, cpf })
-              }}
-            />
-
-            <Input
               label="Nome completo"
               dataType="text"
               handler={(name: string) => {
                 setForm({ ...form, name })
+              }}
+            />
+            <Input
+              label="CPF"
+              dataType="cpf"
+              handler={(cpf: string) => {
+                setForm({ ...form, cpf })
               }}
             />
             <Input

@@ -21,7 +21,6 @@
    "scripts": {
       "build": "rm -rf build && tsc",
       "dev": "nodemon --exec ts-node src/server.ts",
-      "startDev": "ts-node src/server.ts",
-      "start": "ts-node build/server.js"
+      "start": "ts-node ./build/server.js"
    }
 }
